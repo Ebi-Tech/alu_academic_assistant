@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:main_app/utils/constants.dart';
-import 'screens/dashboard_screen.dart';
-import 'screens/assignments_screen.dart';
-import 'screens/schedule_screen.dart';
+// import 'screens/dashboard_screen.dart';
+// import 'screens/assignments_screen.dart';
+// import 'screens/schedule_screen.dart';
 
 void main() {
   runApp(const ALUAcademicAssistant());
@@ -97,7 +97,7 @@ class DashboardScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Dashboard')),
       body: const Center(
-        child: Text('Dashboard Screen - Team Member 2 will implement'),
+        child: Text('Dashboard Screen - Sheila will implement'),
       ),
     );
   }
@@ -111,7 +111,7 @@ class AssignmentsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Assignments')),
       body: const Center(
-        child: Text('Assignments Screen - Team Member 3 will implement'),
+        child: Text('Assignments Screen - Esther will implement'),
       ),
     );
   }
@@ -125,7 +125,7 @@ class ScheduleScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Schedule')),
       body: const Center(
-        child: Text('Schedule Screen - Team Member 4 will implement'),
+        child: Text('Schedule Screen - Jeremie will implement'),
       ),
     );
   }
