@@ -20,18 +20,18 @@ class ALUAcademicAssistant extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: ALUColors.primaryBlue,
           primary: ALUColors.primaryBlue,
-          secondary: ALUColors.secondaryRed,
+          secondary: ALUColors.progressBlue, 
         ),
-        scaffoldBackgroundColor: ALUColors.backgroundGray,
+        scaffoldBackgroundColor: ALUColors.primaryDark, 
         appBarTheme: AppBarTheme(
-          backgroundColor: ALUColors.primaryBlue,
-          foregroundColor: Colors.white,
+          backgroundColor: ALUColors.primaryDark, 
+          foregroundColor: ALUColors.textWhite, 
           elevation: 2,
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Colors.white,
+          backgroundColor: ALUColors.cardDark, 
           selectedItemColor: ALUColors.primaryBlue,
-          unselectedItemColor: ALUColors.textLight,
+          unselectedItemColor: ALUColors.textGrey, 
         ),
         useMaterial3: true,
       ),
@@ -53,7 +53,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   // Screens for navigation
   final List<Widget> _screens = [
-    const DashboardScreen(),      // Using Sheila's implemented DashboardScreen
+    const DashboardScreen(),    
     const AssignmentsScreen(),
     const ScheduleScreen(),
   ];
@@ -88,9 +88,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   }
 }
 
-// ✅ REMOVED: DashboardScreen placeholder (now using real one from screens/)
-// ✅ KEPT: AssignmentsScreen placeholder (Member 3 will replace)
-// ✅ KEPT: ScheduleScreen placeholder (Member 4 will replace)
+
 
 class AssignmentsScreen extends StatelessWidget {
   const AssignmentsScreen({super.key});
@@ -98,9 +96,16 @@ class AssignmentsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Assignments')),
+      appBar: AppBar(
+        title: const Text('Assignments'),
+        backgroundColor: ALUColors.primaryDark, 
+      ),
+      backgroundColor: ALUColors.primaryDark, 
       body: const Center(
-        child: Text('Assignments Screen - Esther will implement'),
+        child: Text(
+          'Assignments Screen - Esther will implement',
+          style: TextStyle(color: ALUColors.textWhite),
+        ),
       ),
     );
   }
@@ -112,9 +117,16 @@ class ScheduleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Schedule')),
+      appBar: AppBar(
+        title: const Text('Schedule'),
+        backgroundColor: ALUColors.primaryDark,
+      ),
+      backgroundColor: ALUColors.primaryDark, 
       body: const Center(
-        child: Text('Schedule Screen - Jeremie will implement'),
+        child: Text(
+          'Schedule Screen - Jeremie will implement',
+          style: TextStyle(color: ALUColors.textWhite),
+        ),
       ),
     );
   }
