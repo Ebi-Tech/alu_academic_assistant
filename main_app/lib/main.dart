@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:main_app/utils/constants.dart';
-// import 'screens/dashboard_screen.dart';
+import 'screens/dashboard_screen.dart'; 
 // import 'screens/assignments_screen.dart';
 // import 'screens/schedule_screen.dart';
 
@@ -53,7 +53,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   // Screens for navigation
   final List<Widget> _screens = [
-    const DashboardScreen(),
+    const DashboardScreen(),      // Using Sheila's implemented DashboardScreen
     const AssignmentsScreen(),
     const ScheduleScreen(),
   ];
@@ -88,20 +88,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   }
 }
 
-// Temporary placeholder screens until my teamamtes create their screens
-class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Dashboard')),
-      body: const Center(
-        child: Text('Dashboard Screen - Sheila will implement'),
-      ),
-    );
-  }
-}
+// ✅ REMOVED: DashboardScreen placeholder (now using real one from screens/)
+// ✅ KEPT: AssignmentsScreen placeholder (Member 3 will replace)
+// ✅ KEPT: ScheduleScreen placeholder (Member 4 will replace)
 
 class AssignmentsScreen extends StatelessWidget {
   const AssignmentsScreen({super.key});
