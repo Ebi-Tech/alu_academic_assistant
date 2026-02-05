@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class AcademicSession {
   final String id;
   String title;
