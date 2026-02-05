@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/attendance_indicator.dart';
 import '../widgets/week_summary_card.dart';
 import '../services/attendance_calculator.dart';
+import '../utils/constants.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -19,16 +20,20 @@ class DashboardScreen extends StatelessWidget {
     );
 
     return Scaffold(
-      backgroundColor: const Color(0xFF000D1D),
+      backgroundColor: ALUColors.backgroundGray, // Light gray background
       appBar: AppBar(
         title: const Text(
           "Dashboard",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        backgroundColor: ALUColors.primaryBlue, // ALU Blue app bar
+        elevation: 2,
+        iconTheme: const IconThemeData(color: Colors.white),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.person_outline)),
+          IconButton(
+            onPressed: () {}, 
+            icon: const Icon(Icons.person_outline, color: Colors.white),
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -39,13 +44,13 @@ class DashboardScreen extends StatelessWidget {
             // 1. DATE & WEEK SECTION
             const Text(
               "Today, February 3rd 2026",
-              style: TextStyle(color: Colors.white70, fontSize: 14),
+              style: TextStyle(color: ALUColors.textLight, fontSize: 14), // Changed to textLight
             ),
             const SizedBox(height: 5),
             Text(
               "Welcome back, Student!",
               style: TextStyle(
-                color: Colors.white.withOpacity(0.9),
+                color: ALUColors.textDark, // Changed to textDark
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
@@ -53,7 +58,6 @@ class DashboardScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             // 2. ATTENDANCE WARNING INDICATOR
-            // When the attendance is less than 75, it'll turn to red.
             AttendanceIndicator(percentage: attendanceRate),
 
             const SizedBox(height: 20),
@@ -65,14 +69,14 @@ class DashboardScreen extends StatelessWidget {
                   title: "Academic Week",
                   value: currentWeek,
                   icon: Icons.calendar_month,
-                  accentColor: const Color(0xFFFFCC00),
+                  accentColor: ALUColors.warningYellow, // Use ALU yellow
                 ),
                 const SizedBox(width: 12),
                 WeekSummaryCard(
                   title: "Assignments",
                   value: "$pendingAssignmentsCount Pending",
                   icon: Icons.assignment_outlined,
-                  accentColor: Colors.orangeAccent,
+                  accentColor: ALUColors.secondaryRed, // Use ALU red
                 ),
               ],
             ),
@@ -80,10 +84,10 @@ class DashboardScreen extends StatelessWidget {
             const SizedBox(height: 30),
 
             // 4. TODAY'S SCHEDULE SECTION
-            const Text(
+            Text(
               "Today's Academic Sessions",
               style: TextStyle(
-                color: Colors.white,
+                color: ALUColors.textDark, // Changed to textDark
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
@@ -126,19 +130,26 @@ class DashboardScreen extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
+        color: Colors.white, // White cards on gray background
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white10),
+        border: Border.all(color: Colors.grey.shade200),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: const Color(0xFFFFCC00).withOpacity(0.1),
+              color: ALUColors.primaryBlue.withOpacity(0.1), // ALU blue tint
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.school, color: Color(0xFFFFCC00), size: 20),
+            child: Icon(Icons.school, color: ALUColors.primaryBlue, size: 20), // ALU blue icon
           ),
           const SizedBox(width: 15),
           Expanded(
@@ -147,8 +158,8 @@ class DashboardScreen extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: ALUColors.textDark, // Changed to textDark
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
@@ -156,7 +167,7 @@ class DashboardScreen extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   "$time | $location",
-                  style: const TextStyle(color: Colors.white54, fontSize: 13),
+                  style: TextStyle(color: ALUColors.textLight, fontSize: 13), // Changed to textLight
                 ),
               ],
             ),
@@ -164,12 +175,17 @@ class DashboardScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: Colors.blueGrey.withOpacity(0.2),
+              color: ALUColors.primaryBlue.withOpacity(0.1), // ALU blue tint
               borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: ALUColors.primaryBlue.withOpacity(0.3)),
             ),
             child: Text(
               type,
-              style: const TextStyle(color: Colors.white70, fontSize: 10),
+              style: TextStyle(
+                color: ALUColors.primaryBlue, // ALU blue text
+                fontSize: 10,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],

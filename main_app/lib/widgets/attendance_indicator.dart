@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/constants.dart'; 
 
 class AttendanceIndicator extends StatelessWidget {
   final double percentage;
@@ -7,13 +8,12 @@ class AttendanceIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool atRisk = percentage < 75;
-
+    bool atRisk = percentage < 75; 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: atRisk ? const Color(0xFFD32F2F) : const Color(0xFF1A237E),
+        color: atRisk ? ALUColors.warningYellow : ALUColors.primaryBlue, // Used ALU colors instead of hardcoded colors
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -23,13 +23,15 @@ class AttendanceIndicator extends StatelessWidget {
             color: Colors.white,
           ),
           const SizedBox(width: 12),
-          Text(
-            atRisk
-                ? "AT RISK WARNING: ${percentage.toStringAsFixed(1)}%"
-                : "Attendance: ${percentage.toStringAsFixed(1)}%",
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+          Expanded(
+            child: Text(
+              atRisk
+                  ? "AT RISK WARNING: ${percentage.toStringAsFixed(1)}%"
+                  : "Attendance: ${percentage.toStringAsFixed(1)}%",
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],
