@@ -298,9 +298,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  // ─────────────────────────────────────────────
   // WEEK OVERVIEW STATS (two cards at top)
-  // ─────────────────────────────────────────────
+
   Widget _buildWeekOverviewCards() {
     return Row(
       children: [
@@ -391,9 +390,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  // ─────────────────────────────────────────────
   // HORIZONTAL DATE PICKER (scrollable week)
-  // ─────────────────────────────────────────────
+
   Widget _buildDateSelector() {
     // Build the current week (Mon–Sun)
     final now = DateTime.now();
@@ -489,9 +487,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  // ─────────────────────────────────────────────
   // DAY HEADER
-  // ─────────────────────────────────────────────
+
   Widget _buildDayHeader(bool isToday) {
     final sessions = _sessionsForSelectedDate;
     return Row(
@@ -537,9 +534,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  // ─────────────────────────────────────────────
   // EMPTY STATE (no sessions)
-  // ─────────────────────────────────────────────
+
   Widget _buildEmptyState() {
     return Container(
       width: double.infinity,
@@ -574,9 +570,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  // ─────────────────────────────────────────────
   // TIMELINE LIST
-  // ─────────────────────────────────────────────
+
   Widget _buildTimeline(List<AcademicSession> sessions) {
     return Column(
       children: List.generate(sessions.length, (index) {
@@ -642,9 +637,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  // ─────────────────────────────────────────────
   // SESSION CARD
-  // ─────────────────────────────────────────────
+
   Widget _buildSessionCard(AcademicSession session, bool isCurrent) {
     final typeColor = _getTypeColor(session.sessionType);
     final typeIcon = _getTypeIcon(session.sessionType);
