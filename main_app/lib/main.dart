@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:main_app/utils/constants.dart';
 import 'screens/dashboard_screen.dart'; 
 // import 'screens/assignments_screen.dart';
-// import 'screens/schedule_screen.dart';
+import 'screens/schedule_screen.dart';
 
 void main() {
   runApp(const ALUAcademicAssistant());
@@ -104,27 +104,6 @@ class AssignmentsScreen extends StatelessWidget {
       body: const Center(
         child: Text(
           'Assignments Screen - Esther will implement',
-          style: TextStyle(color: ALUColors.textWhite),
-        ),
-      ),
-    );
-  }
-}
-
-class ScheduleScreen extends StatelessWidget {
-  const ScheduleScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Schedule'),
-        backgroundColor: ALUColors.primaryDark,
-      ),
-      backgroundColor: ALUColors.primaryDark, 
-      body: const Center(
-        child: Text(
-          'Schedule Screen - Jeremie will implement',
           style: TextStyle(color: ALUColors.textWhite),
         ),
       ),
