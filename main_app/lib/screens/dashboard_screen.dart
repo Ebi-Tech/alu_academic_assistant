@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/attendance_indicator.dart';
-import '../widgets/week_summary_card.dart';
+// import '../widgets/week_summary_card.dart';
 import '../services/attendance_calculator.dart';
 import '../utils/constants.dart';
 
