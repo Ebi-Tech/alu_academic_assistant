@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/assignment.dart';
-import '../utils/constants.dart';
 
 class AssignmentForm extends StatefulWidget {
   final Assignment? assignment;
@@ -81,10 +80,10 @@ class _AssignmentFormState extends State<AssignmentForm> {
         children: [
           Text(
             widget.assignment == null ? 'Add Assignment' : 'Edit Assignment',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: ALUColors.textWhite,
+              color: Colors.white,
             ),
           ),
           const SizedBox(height: 20),
@@ -97,16 +96,24 @@ class _AssignmentFormState extends State<AssignmentForm> {
                   controller: _titleController,
                   decoration: InputDecoration(
                     labelText: 'Assignment Title *',
-                    labelStyle: TextStyle(color: ALUColors.textGrey),
+                    labelStyle: const TextStyle(color: Color(0xFFA0AEC0)),
+                    filled: true,
+                    fillColor: const Color(0xFF2D3748).withOpacity(0.3),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: ALUColors.divider),
+                      borderSide: const BorderSide(color: Color(0xFF4A5568)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: ALUColors.primaryBlue),
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFF0033A0), width: 2),
                     ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFF4A5568)),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   ),
-                  style: TextStyle(color: ALUColors.textWhite),
+                  style: const TextStyle(color: Colors.white),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Title is required';
@@ -121,16 +128,24 @@ class _AssignmentFormState extends State<AssignmentForm> {
                   controller: _courseController,
                   decoration: InputDecoration(
                     labelText: 'Course Name *',
-                    labelStyle: TextStyle(color: ALUColors.textGrey),
+                    labelStyle: const TextStyle(color: Color(0xFFA0AEC0)),
+                    filled: true,
+                    fillColor: const Color(0xFF2D3748).withOpacity(0.3),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: ALUColors.divider),
+                      borderSide: const BorderSide(color: Color(0xFF4A5568)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: ALUColors.primaryBlue),
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFF0033A0), width: 2),
                     ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFF4A5568)),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   ),
-                  style: TextStyle(color: ALUColors.textWhite),
+                  style: const TextStyle(color: Colors.white),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Course is required';
@@ -146,16 +161,17 @@ class _AssignmentFormState extends State<AssignmentForm> {
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      border: Border.all(color: ALUColors.divider),
+                      color: const Color(0xFF2D3748).withOpacity(0.3),
+                      border: Border.all(color: const Color(0xFF4A5568)),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.calendar_today, color: ALUColors.textGrey),
+                        const Icon(Icons.calendar_today, color: Color(0xFFA0AEC0)),
                         const SizedBox(width: 12),
                         Text(
                           'Due: ${_dueDate.toLocal().toString().split(' ')[0]}',
-                          style: TextStyle(color: ALUColors.textWhite),
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ],
                     ),
@@ -168,32 +184,92 @@ class _AssignmentFormState extends State<AssignmentForm> {
                   value: _priority,
                   decoration: InputDecoration(
                     labelText: 'Priority (Optional)',
-                    labelStyle: TextStyle(color: ALUColors.textGrey),
+                    labelStyle: const TextStyle(color: Color(0xFFA0AEC0)),
+                    filled: true,
+                    fillColor: const Color(0xFF2D3748).withOpacity(0.3),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: ALUColors.divider),
+                      borderSide: const BorderSide(color: Color(0xFF4A5568)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFF4A5568)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: ALUColors.primaryBlue),
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFF0033A0)),
                     ),
                   ),
-                  style: TextStyle(color: ALUColors.textWhite),
+                  style: const TextStyle(color: Colors.white),
+                  dropdownColor: const Color(0xFF2D3748),
+                  icon: const Icon(Icons.arrow_drop_down, color: Color(0xFFA0AEC0)),
                   items: [
-                    const DropdownMenuItem(
+                    const DropdownMenuItem<String?>(
                       value: null,
-                      child: Text('None'),
+                      child: Text(
+                        'None',
+                        style: TextStyle(color: Color(0xFFA0AEC0)),
+                      ),
                     ),
-                    const DropdownMenuItem(
+                    DropdownMenuItem<String?>(
                       value: 'High',
-                      child: Text('High'),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 8,
+                            height: 8,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFD32F2F),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          const Text(
+                            'High',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
-                    const DropdownMenuItem(
+                    DropdownMenuItem<String?>(
                       value: 'Medium',
-                      child: Text('Medium'),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 8,
+                            height: 8,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFFFC72C),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          const Text(
+                            'Medium',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
-                    const DropdownMenuItem(
+                    DropdownMenuItem<String?>(
                       value: 'Low',
-                      child: Text('Low'),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 8,
+                            height: 8,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF43B02A),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          const Text(
+                            'Low',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                   onChanged: (value) => setState(() => _priority = value),
@@ -205,6 +281,13 @@ class _AssignmentFormState extends State<AssignmentForm> {
                     Expanded(
                       child: TextButton(
                         onPressed: () => Navigator.pop(context),
+                        style: TextButton.styleFrom(
+                          foregroundColor: const Color(0xFFA0AEC0),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
                         child: const Text('Cancel'),
                       ),
                     ),
@@ -213,7 +296,12 @@ class _AssignmentFormState extends State<AssignmentForm> {
                       child: ElevatedButton(
                         onPressed: _submit,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: ALUColors.primaryBlue,
+                          backgroundColor: const Color(0xFF0033A0),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
                         child: const Text('Save'),
                       ),

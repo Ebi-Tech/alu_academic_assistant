@@ -1,353 +1,221 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../widgets/attendance_indicator.dart';
-// import '../widgets/week_summary_card.dart';
-import '../services/attendance_calculator.dart';
+import '../widgets/week_summary_card.dart';
+import '../services/assignment_service.dart';
+import '../services/session_service.dart';
 import '../utils/constants.dart';
+import '../utils/helpers.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    const int totalSessions = 20;
-    const int sessionsPresent = 13;
-    const int pendingAssignmentsCount = 5;
-    const String currentWeek = "Week 5";
-
-    double attendanceRate = AttendanceCalculator.calculatePercentage(
-      sessionsPresent,
-      totalSessions,
-    );
-
     return Scaffold(
-      backgroundColor: ALUColors.primaryDark, // Dark blue from sample
+      backgroundColor: ALUColors.primaryDark,
       appBar: AppBar(
         title: const Text(
           "Dashboard",
-          style: TextStyle(
-            fontWeight: FontWeight.bold, 
-            color: ALUColors.textWhite,
-            fontSize: 20,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        backgroundColor: Colors.transparent, // Transparent like sample
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: ALUColors.textWhite),
         actions: [
           IconButton(
             onPressed: () {}, 
-            icon: const Icon(Icons.notifications_outlined, color: ALUColors.textWhite),
-          ),
-          IconButton(
-            onPressed: () {}, 
-            icon: const Icon(Icons.person_outline, color: ALUColors.textWhite),
+            icon: const Icon(Icons.person_outline, color: Colors.white),
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 1. GREETING SECTION - Like sample "Hello Alex At Risk"
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: ALUColors.cardDark, // Dark card background
-                borderRadius: BorderRadius.circular(12),
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    ALUColors.primaryBlue.withOpacity(0.3),
-                    ALUColors.secondaryBlue.withOpacity(0.1),
+      body: Consumer2<AssignmentService, SessionService>(
+        builder: (context, assignmentService, sessionService, child) {
+          // Calculate dynamic data
+          final today = DateTime.now();
+          final academicWeek = DateHelpers.getAcademicWeek(today);
+          final attendanceRate = sessionService.attendancePercentage;
+          final todaysSessions = sessionService.todaysSessions;
+          final assignmentsDueNext7Days = assignmentService.assignmentsDueNext7Days;
+          final pendingAssignments = assignmentService.pendingAssignments.length;
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 1. DATE & WEEK SECTION - Now dynamic
+                Text(
+                  DateHelpers.formatDate(today),
+                  style: TextStyle(color: ALUColors.textGrey, fontSize: 14),
+                ),
+                const SizedBox(height: 5),
+                const Text(
+                  "Welcome back, Student!",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // 2. ATTENDANCE WARNING INDICATOR - Now dynamic
+                AttendanceIndicator(percentage: attendanceRate * 100),
+
+                const SizedBox(height: 20),
+
+                // 3. SUMMARY CARDS - Now dynamic
+                Row(
+                  children: [
+                    WeekSummaryCard(
+                      title: "Academic Week",
+                      value: "Week $academicWeek",
+                      icon: Icons.calendar_month,
+                      accentColor: ALUColors.warningYellow,
+                      isDarkMode: true,
+                    ),
+                    const SizedBox(width: 12),
+                    WeekSummaryCard(
+                      title: "Assignments",
+                      value: "$pendingAssignments Pending",
+                      icon: Icons.assignment_outlined,
+                      accentColor: Colors.orangeAccent,
+                      isDarkMode: true,
+                    ),
                   ],
                 ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: ALUColors.warningRed.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: ALUColors.warningRed),
-                        ),
-                        child: const Text(
-                          "AT RISK",
-                          style: TextStyle(
-                            color: ALUColors.warningRed,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
+
+                const SizedBox(height: 30),
+
+                // 4. ASSIGNMENTS DUE IN NEXT 7 DAYS (New Section)
+                if (assignmentsDueNext7Days.isNotEmpty) ...[
+                  const Text(
+                    "Upcoming Assignments (Next 7 Days)",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  ...assignmentsDueNext7Days.take(3).map((assignment) => 
+                    _buildAssignmentTile(
+                      assignment.title,
+                      assignment.course,
+                      assignment.dueDate,
+                      assignment.priority,
+                    )
+                  ).toList(),
+                  if (assignmentsDueNext7Days.length > 3) ...[
+                    const SizedBox(height: 10),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          // Navigate to assignments screen
+                          // We'll implement this later
+                        },
+                        child: Text(
+                          "View all ${assignmentsDueNext7Days.length} assignments",
+                          style: TextStyle(color: ALUColors.primaryBlue),
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      const Text(
-                        "Student",
-                        style: TextStyle(
-                          color: ALUColors.textGrey,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    "Welcome back, Alex!",
-                    style: TextStyle(
-                      color: ALUColors.textWhite,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    "Today, February 3rd 2026 • Week 5",
-                    style: TextStyle(
-                      color: ALUColors.textGrey,
-                      fontSize: 14,
-                    ),
-                  ),
+                  ],
+                  const SizedBox(height: 30),
                 ],
-              ),
-            ),
 
-            const SizedBox(height: 20),
-
-            // 2. ATTENDANCE WARNING INDICATOR - Like sample "AT RISK WARNING"
-            AttendanceIndicator(percentage: attendanceRate),
-
-            const SizedBox(height: 20),
-
-            // 3. QUICK STATS - Creative design inspired by sample
-            Row(
-              children: [
-                Expanded(
-                  child: _buildStatCard(
-                    title: "Academic Week",
-                    value: "Week 5",
-                    icon: Icons.calendar_month,
-                    color: ALUColors.progressBlue,
-                    progress: 5/15, // 5 out of 15 weeks
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildStatCard(
-                    title: "Assignments",
-                    value: "$pendingAssignmentsCount Pending",
-                    icon: Icons.assignment_outlined,
-                    color: ALUColors.warningYellow,
-                    progress: pendingAssignmentsCount/10, // Assuming max 10
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 30),
-
-            // 4. ATTENDANCE PROGRESS - Like sample "75% 60% 63%"
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: ALUColors.cardDark,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Attendance Progress",
-                    style: TextStyle(
-                      color: ALUColors.textWhite,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  _buildAttendanceProgress("Overall", attendanceRate/100, ALUColors.progressBlue),
-                  const SizedBox(height: 8),
-                  _buildAttendanceProgress("This Month", 0.60, ALUColors.warningYellow),
-                  const SizedBox(height: 8),
-                  _buildAttendanceProgress("This Week", 0.63, ALUColors.successGreen),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 30),
-
-            // 5. TODAY'S SCHEDULE SECTION - Creative design
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+                // 5. TODAY'S SCHEDULE SECTION - Now dynamic
                 const Text(
                   "Today's Academic Sessions",
                   style: TextStyle(
-                    color: ALUColors.textWhite,
+                    color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "See All",
-                    style: TextStyle(
-                      color: ALUColors.primaryBlue,
-                      fontSize: 14,
+                const SizedBox(height: 15),
+
+                if (todaysSessions.isNotEmpty) ...[
+                  ...todaysSessions.map((session) => 
+                    _buildSessionTile(
+                      session.title,
+                      session.startTime,
+                      session.endTime,
+                      session.location ?? 'No location',
+                      session.sessionType,
+                      session.isPresent,
+                      () => sessionService.toggleAttendance(session.id),
+                    )
+                  ).toList(),
+                ] else ...[
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.white10),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "No sessions scheduled for today",
+                        style: TextStyle(color: Colors.white54),
+                      ),
                     ),
                   ),
-                ),
+                ],
+
+                const SizedBox(height: 20),
+
+                // 6. ADD SAMPLE DATA BUTTON (For testing - remove in final version)
+                if (assignmentService.assignments.isEmpty || sessionService.sessions.isEmpty) ...[
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        assignmentService.addSampleData();
+                        sessionService.addSampleSessions();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ALUColors.primaryBlue,
+                      ),
+                      child: const Text('Load Sample Data'),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ],
             ),
-            const SizedBox(height: 15),
-
-            _buildSessionTile(
-              "Software Engineering",
-              "09:00 AM - 11:00 AM",
-              "Kigali Hall A",
-              "Class",
-              ALUColors.progressBlue,
-            ),
-            _buildSessionTile(
-              "Professional Skills (PSL)",
-              "02:00 PM - 03:30 PM",
-              "Online (Zoom)",
-              "PSL Meeting",
-              ALUColors.successGreen,
-            ),
-            _buildSessionTile(
-              "Data Structures",
-              "04:00 PM - 05:30 PM",
-              "Innovation Lab",
-              "Mastery Session",
-              ALUColors.warningYellow,
-            ),
-
-            const SizedBox(height: 20),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildStatCard({
-    required String title,
-    required String value,
-    required IconData icon,
-    required Color color,
-    required double progress,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: ALUColors.cardLight,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(icon, color: color, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                title,
-                style: TextStyle(
-                  color: ALUColors.textGrey,
-                  fontSize: 12,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            value,
-            style: TextStyle(
-              color: ALUColors.textWhite,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          LinearProgressIndicator(
-            value: progress,
-            backgroundColor: color.withOpacity(0.2),
-            valueColor: AlwaysStoppedAnimation<Color>(color),
-            minHeight: 4,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAttendanceProgress(String label, double percentage, Color color) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                color: ALUColors.textLight,
-                fontSize: 14,
-              ),
-            ),
-            Text(
-              "${(percentage * 100).toStringAsFixed(0)}%",
-              style: TextStyle(
-                color: ALUColors.textWhite,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 4),
-        LinearProgressIndicator(
-          value: percentage,
-          backgroundColor: color.withOpacity(0.2),
-          valueColor: AlwaysStoppedAnimation<Color>(color),
-          minHeight: 6,
-          borderRadius: BorderRadius.circular(3),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSessionTile(
+  Widget _buildAssignmentTile(
     String title,
-    String time,
-    String location,
-    String type,
-    Color typeColor,
+    String course,
+    DateTime dueDate,
+    String? priority,
   ) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: ALUColors.cardDark,
+        color: Colors.white.withOpacity(0.05),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: ALUColors.divider),
+        border: Border.all(color: Colors.white10),
       ),
       child: Row(
         children: [
           Container(
-            width: 4,
-            height: 40,
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: typeColor,
-              borderRadius: BorderRadius.circular(2),
+              color: ALUColors.primaryBlue.withOpacity(0.1),
+              shape: BoxShape.circle,
             ),
+            child: Icon(Icons.assignment, color: ALUColors.primaryBlue, size: 20),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 15),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -355,37 +223,145 @@ class DashboardScreen extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    color: ALUColors.textWhite,
+                    color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "$time | $location",
-                  style: TextStyle(color: ALUColors.textGrey, fontSize: 13),
+                  "$course • Due: ${dueDate.toLocal().toString().split(' ')[0]}",
+                  style: const TextStyle(color: Colors.white54, fontSize: 13),
                 ),
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: typeColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: typeColor.withOpacity(0.3)),
-            ),
-            child: Text(
-              type,
-              style: TextStyle(
-                color: typeColor,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
+          if (priority != null) ...[
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: _getPriorityColor(priority).withOpacity(0.2),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Text(
+                priority,
+                style: TextStyle(color: _getPriorityColor(priority), fontSize: 10),
               ),
             ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSessionTile(
+    String title,
+    TimeOfDay startTime,
+    TimeOfDay endTime,
+    String location,
+    String type,
+    bool isPresent,
+    VoidCallback onToggleAttendance,
+  ) {
+    final timeText = '${_formatTime(startTime)} - ${_formatTime(endTime)}';
+    
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white10),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: _getSessionTypeColor(type).withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(Icons.school, color: _getSessionTypeColor(type), size: 20),
+          ),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  "$timeText | $location",
+                  style: const TextStyle(color: Colors.white54, fontSize: 13),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.blueGrey.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Text(
+                  type,
+                  style: const TextStyle(color: Colors.white70, fontSize: 10),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Switch(
+                value: isPresent,
+                onChanged: (_) => onToggleAttendance(),
+                activeColor: ALUColors.successGreen,
+              ),
+            ],
           ),
         ],
       ),
     );
+  }
+
+  String _formatTime(TimeOfDay time) {
+    final hour = time.hourOfPeriod;
+    final minute = time.minute.toString().padLeft(2, '0');
+    final period = time.period == DayPeriod.am ? 'AM' : 'PM';
+    return '$hour:$minute $period';
+  }
+
+  Color _getPriorityColor(String priority) {
+    switch (priority) {
+      case 'High':
+        return ALUColors.warningRed;
+      case 'Medium':
+        return ALUColors.warningYellow;
+      case 'Low':
+        return ALUColors.successGreen;
+      default:
+        return ALUColors.textGrey;
+    }
+  }
+
+  Color _getSessionTypeColor(String type) {
+    switch (type) {
+      case 'Class':
+        return ALUColors.primaryBlue;
+      case 'Mastery Session':
+        return ALUColors.successGreen;
+      case 'Study Group':
+        return ALUColors.warningYellow;
+      case 'PSL Meeting':
+        return ALUColors.progressBlue;
+      default:
+        return ALUColors.textGrey;
+    }
   }
 }

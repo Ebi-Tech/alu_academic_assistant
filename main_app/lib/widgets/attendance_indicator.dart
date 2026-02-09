@@ -19,7 +19,7 @@ class AttendanceIndicator extends StatelessWidget {
           end: Alignment.centerRight,
           colors: atRisk
               ? [ALUColors.warningRed, ALUColors.warningRed.withOpacity(0.8)]
-              : [ALUColors.primaryBlue, ALUColors.secondaryBlue],
+              : [ALUColors.primaryBlue, ALUColors.primaryBlue.withOpacity(0.8)],
         ),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
