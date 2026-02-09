@@ -7,16 +7,47 @@ import '../widgets/assignment_form.dart';
 class AssignmentsScreen extends StatelessWidget {
   const AssignmentsScreen({super.key});
 
+
+  void _openForm(BuildContext context, {assignment}) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (_) => AssignmentForm(
+        assignment: assignment,
+        onSave: (newAssignment) {
+          final service =
+              Provider.of<AssignmentService>(context, listen: false);
+
+          if (assignment == null) {
+            service.addAssignment(newAssignment);
+          } else {
+            service.updateAssignment(newAssignment);
+          }
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final service = Provider.of<AssignmentService>(context);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Assignments')),
+
       body: service.assignments.isEmpty
           ? const Center(child: Text('No assignments yet'))
           : ListView.builder(
               padding: const EdgeInsets.all(16),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _openForm(context),
+        child: const Icon(Icons.add),
+      ),
+      body: service.assignments.isEmpty
+          ? const Center(child: Text('No assignments yet'))
+          : ListView.builder(
+
               itemCount: service.assignments.length,
               itemBuilder: (context, index) {
                 final assignment = service.assignments[index];
