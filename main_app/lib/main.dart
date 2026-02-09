@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:main_app/utils/constants.dart';
-import 'screens/dashboard_screen.dart'; 
-// import 'screens/assignments_screen.dart';
+import 'services/assignment_service.dart';
+import 'screens/dashboard_screen.dart';
+import 'screens/assignments_screen.dart';
 import 'screens/schedule_screen.dart';
 
 void main() {
-  runApp(const ALUAcademicAssistant());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => AssignmentService(),
+      child: const ALUAcademicAssistant(),
+    ),
+  );
 }
 
 class ALUAcademicAssistant extends StatelessWidget {
@@ -88,25 +95,3 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   }
 }
 
-
-
-class AssignmentsScreen extends StatelessWidget {
-  const AssignmentsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Assignments'),
-        backgroundColor: ALUColors.primaryDark, 
-      ),
-      backgroundColor: ALUColors.primaryDark, 
-      body: const Center(
-        child: Text(
-          'Assignments Screen - Esther will implement',
-          style: TextStyle(color: ALUColors.textWhite),
-        ),
-      ),
-    );
-  }
-}
