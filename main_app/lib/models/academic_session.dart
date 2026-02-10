@@ -21,7 +21,7 @@ class AcademicSession {
     this.isPresent = false,
   });
   
-  // Check if end time is after start time
+  
   bool get isValidTime => endTime.hour > startTime.hour || 
                          (endTime.hour == startTime.hour && endTime.minute > startTime.minute);
   
