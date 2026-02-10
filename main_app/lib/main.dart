@@ -13,7 +13,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => AssignmentService()),
         ChangeNotifierProvider(create: (_) => SessionService()),
-        // Member 4 will add ScheduleService later
+        
       ],
       child: const ALUAcademicAssistant(),
     ),
@@ -33,18 +33,18 @@ class ALUAcademicAssistant extends StatelessWidget {
           seedColor: ALUColors.primaryBlue,
           primary: ALUColors.primaryBlue,
           secondary: ALUColors.progressBlue,
-          brightness: Brightness.dark, // Force dark theme
+          brightness: Brightness.dark, 
         ),
         scaffoldBackgroundColor: ALUColors.primaryDark,
         appBarTheme: AppBarTheme(
           backgroundColor: ALUColors.primaryDark,
-          foregroundColor: Colors.white, // Force white
+          foregroundColor: Colors.white, 
           elevation: 2,
           iconTheme: const IconThemeData(color: Colors.white),
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: ALUColors.cardLight,
-          selectedItemColor: Colors.white, // White for selected
+          selectedItemColor: Colors.white, 
           unselectedItemColor: ALUColors.textGrey,
           selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.w600,
@@ -61,7 +61,7 @@ class ALUAcademicAssistant extends StatelessWidget {
           type: BottomNavigationBarType.fixed,
         ),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: Color(0xFF0033A0), // ALU Blue
+          backgroundColor: Color(0xFF0033A0), 
           foregroundColor: Colors.white,
         ),
         dropdownMenuTheme: DropdownMenuThemeData(
@@ -116,7 +116,7 @@ class MainNavigationScreen extends StatefulWidget {
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _currentIndex = 0;
 
-  // Screens for navigation
+  
   final List<Widget> _screens = [
     const DashboardScreen(),
     const AssignmentsScreen(),
