@@ -3,7 +3,7 @@ class Assignment {
   String title;
   DateTime dueDate;
   String course;
-  String? priority; // 'High', 'Medium', 'Low', or null
+  String? priority; 
   bool isCompleted;
   
   Assignment({

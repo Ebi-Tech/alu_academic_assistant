@@ -7,7 +7,7 @@ class AcademicSession {
   TimeOfDay startTime;
   TimeOfDay endTime;
   String? location;
-  String sessionType; // 'Class', 'Mastery Session', 'Study Group', 'PSL Meeting'
+  String sessionType; 
   bool isPresent;
   
   AcademicSession({

@@ -17,7 +17,7 @@ class AttendanceRecord {
   
   // Calculate attendance percentage from a list of records
   static double calculatePercentage(List<AttendanceRecord> records) {
-    if (records.isEmpty) return 1.0; // 100% if no records
+    if (records.isEmpty) return 1.0; 
     
     final presentCount = records.where((record) => record.wasPresent).length;
     return presentCount / records.length;
